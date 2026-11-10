@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>本机工作室</title><link rel="icon" href="studio-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="scene-style.css"><link rel="stylesheet" href="studio.css"></head>
+<body>
+<aside class="app-rail" aria-label="工作室导航">
+  <button class="studio-brand" id="brand-home"><img src="studio-logo.svg" alt=""><span><strong>本机工作室</strong><small>你的个人项目团队</small></span><span class="version-tag">0.1</span></button>
+  <nav id="primary-nav"><button data-view="office" class="nav-link selected"><span data-symbol="office"></span>办公室<kbd>1</kbd></button><button data-view="projects" class="nav-link"><span data-symbol="project"></span>项目工作台<kbd>2</kbd></button><button data-view="board" class="nav-link"><span data-symbol="board"></span>任务看板<kbd>3</kbd></button><button data-view="ideas" class="nav-link"><span data-symbol="note"></span>草稿箱<span id="idea-count" class="nav-count"></span></button><button data-view="members" class="nav-link"><span data-symbol="team"></span>团队成员</button><button data-view="inbox" class="nav-link"><span data-symbol="inbox"></span>待我处理<span id="inbox-count" class="nav-count"></span></button></nav>
+  <div class="rail-section"><span>项目空间</span><button id="rail-new-project" class="icon-button" aria-label="新建项目">+</button></div><div id="project-nav" class="project-nav"></div>
+  <div class="rail-bottom"><button data-view="connections" class="nav-link"><span data-symbol="plug"></span>接入中心<span id="engine-health" class="health-dot"></span></button><button id="open-settings" class="nav-link"><span data-symbol="settings"></span>工作室设置</button><div class="local-status"><i id="service-dot"></i><span id="service-label">正在连接本机</span></div></div>
+</aside>
+<div class="app-content">
+  <header class="studio-topbar"><div class="breadcrumb"><button id="scope-all">工作室</button><span>/</span><span id="scope-name">全部项目</span></div><div class="topbar-end"><span id="sync-label" class="muted">正在同步</span><button id="refresh" class="icon-button" aria-label="刷新工作室"><span data-symbol="refresh"></span></button></div></header>
+  <main id="workspace"><div class="page-heading"><div><p id="page-eyebrow" class="page-context">本机工作空间</p><h1 id="page-title">我的本机工作室</h1><p id="page-description" class="page-description">项目、成员和成果，在这里连接起来。</p></div><div class="page-actions"><label class="search-box"><span data-symbol="search"></span><input id="search" placeholder="搜索项目或任务" aria-label="搜索项目或任务"><kbd>/</kbd></label><button id="quick-note" class="studio-button quiet"><span data-symbol="note"></span>记个想法</button><button id="new-task" class="studio-button primary"><span data-symbol="plus"></span>新建任务</button></div></div>
+    <div id="summary-strip" class="summary-strip"></div><div id="view-root" aria-live="polite"><div class="loading-message">正在载入你的本机工作空间…</div></div>
+  </main>
+  <footer class="studio-footer"><span id="coverage">本机项目与任务</span><button id="about" class="text-action">数据与协作说明</button></footer>
+</div>
+<dialog id="editor" class="studio-dialog" aria-labelledby="dialog-title"><form id="editor-form" method="dialog"><header class="dialog-heading"><div><p id="dialog-context">本机工作室</p><h2 id="dialog-title"></h2></div><button type="button" id="close-editor" class="icon-button" aria-label="关闭">×</button></header><div id="dialog-body"></div><p id="form-error" class="form-error" role="alert" hidden></p><footer class="dialog-actions"><button type="button" id="cancel-editor" class="studio-button quiet">取消</button><button type="submit" id="save-editor" class="studio-button primary">保存</button></footer></form></dialog>
+<aside id="detail-panel" class="detail-panel" aria-label="任务详情" hidden><header><span id="detail-label">执行详情</span><button id="close-detail" class="icon-button" aria-label="关闭详情">×</button></header><div id="detail-body"></div></aside>
+<div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+<script type="module" src="studio.js"></script></body></html>

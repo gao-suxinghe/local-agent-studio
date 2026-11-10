@@ -1,0 +1,11 @@
+import path from 'node:path';
+import fs from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import {packager} from '@electron/packager';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),platform=process.argv[2]||process.platform,arch=process.argv[3]||process.arch;
+const {version}=JSON.parse(await fs.readFile(path.join(root,'app/package.json'),'utf8'));
+const buildOut=path.resolve(process.env.STUDIO_BUILD_OUT||path.join(root,'dist'));const buildRelative=path.relative(root,buildOut);if(process.platform==='win32'&&(buildRelative.startsWith('..')||path.isAbsolute(buildRelative)||!buildRelative))throw new Error('Build output must stay inside the independent project.');
+const runtimeTools=path.join(root,'runtime/tools');await fs.mkdir(runtimeTools,{recursive:true});for(const name of ['register-agent.mjs','register-agent.cmd','register-agent.command'])await fs.copyFile(path.join(root,'tools',name),path.join(runtimeTools,name));
+const paths=await packager({dir:path.join(root,'app'),name:'本机工作室',executableName:'AgentOfficeStudio',platform,arch,electronVersion:'45.2.3',out:buildOut,overwrite:true,asar:true,prune:false,appBundleId:'local.agentoffice.studio',appVersion:version,buildVersion:'101',icon:path.join(root,'app/icons/office'),extraResource:[path.join(root,'backend'),runtimeTools],download:{cacheRoot:process.env.ELECTRON_CACHE_ROOT,checksums:JSON.parse(await fs.readFile(path.join(root,'node_modules/electron/checksums.json'),'utf8')),mirrorOptions:{mirror:'https://github.com/electron/electron/releases/download/'}},win32metadata:{CompanyName:'Local',ProductName:'本机工作室',FileDescription:'个人多 Agent 本机项目团队',InternalName:'AgentOfficeStudio'}});
+for(const folder of paths){const resources=platform==='darwin'?path.join(folder,'本机工作室.app/Contents/Resources'):path.join(folder,'resources');await fs.writeFile(platform==='darwin'?path.join(resources,'studio-build.json'):path.join(folder,'studio-build.json'),JSON.stringify({id:'local.agentoffice.studio',version,platform,arch,electron:'45.2.3'}));if(platform==='win32')await fs.copyFile(path.join(root,'tools/register-agent.cmd'),path.join(folder,'register-agent.cmd'));}
+process.stdout.write(JSON.stringify({platform,arch,paths})+'\n');

@@ -1,0 +1,15 @@
+{
+  "name": "local-agent-studio-build",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "start": "node backend/server.mjs",
+    "dev": "electron app",
+    "test": "node --test tests/*.test.mjs",
+    "build:win": "node tools/build.mjs win32 x64"
+  },
+  "engines": { "node": ">=24.0.0" },
+  "devDependencies": { "electron": "45.2.3", "@electron/packager": "20.3.0" }
+}
